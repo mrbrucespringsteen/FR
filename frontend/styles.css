@@ -9,6 +9,7 @@
 
 body {
     background-color: #111111;
+    background-image: linear-gradient(to bottom right, #1a1a1a, #0a0a0a);
     color: white;
     font-family: Arial, sans-serif;
     position: relative;
@@ -24,7 +25,7 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c4zIguAAAA3ElEQVRIx+3VyQ6DMAwF0JTgLIQshGyd//+/Mla6TTmgTH3pHMmCJ7Ed+aqX7Xr91dYU3JhYZ3itb/HiQoJDfjtSJGPhdtBnQUgjahpRJ0Eoq5EiGY2rQZ8FIY0IUuTUiAl9FoQ0Ik+RvBH34lEQyIgkRZJGtC4ehfD42YgwRYJGxPEoBGREJ0Wcj7h3bwHcI5oUcRpReXgLAhmRpUh2j/DwFgQyokuR9B7R4S0I98ed95GH8PAWxL3B+7z5Hh7egjB/PPzPGR/0WRDKHw/fc8GHPgtC+ePhey740GdBKH/8e60PiKUqFYfBQNAAAAAASUVORK5CYII=');
-    opacity: 0.15;
+    opacity: 0.25;
     pointer-events: none;
 }
 
