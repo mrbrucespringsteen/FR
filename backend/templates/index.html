@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cauchy Chain Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .form-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .single-draw-button {
+            background-color: #2ecc71;
+        }
+        
+        .single-draw-button:hover {
+            background-color: #27ae60;
+        }
+        
+        .visualize-button {
+            background-color: #9b59b6;
+        }
+        
+        .visualize-button:hover {
+            background-color: #8e44ad;
+        }
+        
+        .explanation {
+            background-color: #f5f5f5;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cauchy Chain Generator</h1>
+    
+    <div class="form-container">
+        <form id="generatorForm">
+            <div class="form-group">
+                <label for="L">First Value (L):</label>
+                <input type="number" id="L" name="L" value="200" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="U">Second Value (U):</label>
+                <input type="number" id="U" name="U" value="800" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="mode">Distribution Type:</label>
+                <select id="mode" name="mode">
+                    <option value="binary">Binary (L or U)</option>
+                    <option value="continuous">Continuous (L to U)</option>
+                </select>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" onclick="submitForm('/generate')">Generate Multiple Runs</button>
+                <button type="button" class="single-draw-button" onclick="submitForm('/single_draw')">Single Draw</button>
+                <button type="button" class="visualize-button" onclick="submitForm('/visualize')">Visualize Directly</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="explanation">
+        <h3>About this Generator</h3>
+        <p>This tool generates random values using a second-order Cauchy chain with reindexing. The algorithm produces values that are:</p>
+        <ul>
+            <li>Unpredictable and resistant to statistical attacks</li>
+            <li>Suitable for fair random selection between options</li>
+            <li>Based on heavy-tailed distributions for maximum entropy</li>
+        </ul>
+        <p>Choose binary mode for selecting between two discrete values, or continuous mode for values within a range.</p>
+    </div>
+    
+    <script>
+        function submitForm(endpoint) {
+            const form = document.getElementById('generatorForm');
+            const formData = new FormData(form);
+            
+            // Create a new form for submission
+            const submitForm = document.createElement('form');
+            submitForm.method = 'POST';
+            submitForm.action = endpoint;
+            
+            // Add form data to the submit form
+            for (const [key, value] of formData.entries()) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                submitForm.appendChild(input);
+            }
+            
+            // Add the form to the document and submit it
+            document.body.appendChild(submitForm);
+            submitForm.submit();
+        }
+    </script>
+</body>
+</html> 

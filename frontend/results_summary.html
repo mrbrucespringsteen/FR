@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FR - Distribution Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px 0;
+        }
+        
+        .result-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #ff5733;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-info {
+            color: #00CED1;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .grid-item {
+            background-color: #222;
+            border-radius: 4px;
+            padding: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .grid-title {
+            font-size: 0.85rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .bar-container {
+            display: flex;
+            height: 80px;
+            margin-bottom: 4px;
+        }
+        
+        .bar-left, .bar-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 50%;
+        }
+        
+        .bar-left .bar {
+            background-color: #9370DB;  /* Purple */
+        }
+        
+        .bar-right .bar {
+            background-color: #00CED1;  /* Teal */
+        }
+        
+        .bar {
+            width: 70%;
+            transition: height 0.5s ease;
+        }
+        
+        .bar-label {
+            font-size: 0.7rem;
+            color: white;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        .percentage {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 0.65rem;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+        
+        .back-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #444;
+        }
+        
+        .loading-message {
+            color: white;
+            font-size: 1.2rem;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        /* Value labels at bottom */
+        .value-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2px;
+        }
+        
+        .value-label {
+            font-size: 0.7rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <a href="index.html"><span>FR</span></a>
+            </div>
+            <div class="contact">stealth@friendshipresearch.org</div>
+        </header>
+
+        <main>
+            <div class="result-container">
+                <h1 class="result-title">Distribution Results</h1>
+                <div class="result-info">Distribution between <span id="input1Display"></span> and <span id="input2Display"></span> across 100,000 samples</div>
+                
+                <div id="loadingMessage" class="loading-message">Loading data...</div>
+                <div id="gridContainer" class="grid-container" style="display: none;"></div>
+                
+                <div id="extremeRunsInfo" style="margin-top: 20px; padding: 10px; background-color: #333; color: white;">
+                    <h3>Extreme Runs Analysis</h3>
+                    <p id="extremeRunsCount"></p>
+                    <div id="extremeRunsList"></div>
+                </div>
+                
+                <a href="demo.html" class="back-button">Try Again</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="icon">
+                <svg viewBox="0 0 100 100" width="50" height="50">
+                    <circle cx="50" cy="50" r="40" stroke="#ff5733" stroke-width="2" fill="none" />
+                    <circle cx="35" cy="40" r="5" fill="#ff5733" />
+                    <circle cx="65" cy="40" r="5" fill="#ff5733" />
+                    <path d="M 30 60 Q 50 80 70 60" stroke="#ff5733" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+            <div class="footer-image">
+                <img src="images/jankytransparent.png" alt="Janky transparent image">
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get values from localStorage
+            const input1 = localStorage.getItem('demoInput1') || '-';
+            const input2 = localStorage.getItem('demoInput2') || '-';
+            const summaryJson = localStorage.getItem('demoResultSummary');
+            
+            // Display input values
+            document.getElementById('input1Display').textContent = input1;
+            document.getElementById('input2Display').textContent = input2;
+            
+            if (summaryJson) {
+                try {
+                    const summary = JSON.parse(summaryJson);
+                    
+                    console.log('Summary data:', summary);
+                    if (summary.grid_stats) {
+                        console.log('Grid stats length:', summary.grid_stats.length);
+                    } else {
+                        console.log('Grid stats is undefined or null');
+                    }
+                    
+                    if (summary.grid_stats && summary.grid_stats.length > 0) {
+                        // Get grid container
+                        const gridContainer = document.getElementById('gridContainer');
+                        
+                        // Find maximum count to scale the bars
+                        let maxCount = 0;
+                        summary.grid_stats.forEach(batch => {
+                            maxCount = Math.max(maxCount, batch.counts.first, batch.counts.second);
+                        });
+                        
+                        // Create grid items
+                        summary.grid_stats.forEach(batch => {
+                            const gridItem = document.createElement('div');
+                            gridItem.className = 'grid-item';
+                            
+                            // Add percentage only
+                            const percentage = document.createElement('div');
+                            percentage.className = 'percentage';
+                            percentage.textContent = `${(batch.ratio * 100).toFixed(1)}%`;
+                            gridItem.appendChild(percentage);
+                            
+                            // Create bar container
+                            const barContainer = document.createElement('div');
+                            barContainer.className = 'bar-container';
+                            
+                            // Left bar (first value)
+                            const barLeft = document.createElement('div');
+                            barLeft.className = 'bar-left';
+                            
+                            const barLeftInner = document.createElement('div');
+                            barLeftInner.className = 'bar';
+                            barLeftInner.style.height = `${(batch.counts.first / maxCount) * 100}%`;
+                            
+                            barLeft.appendChild(barLeftInner);
+                            
+                            // Right bar (second value)
+                            const barRight = document.createElement('div');
+                            barRight.className = 'bar-right';
+                            
+                            const barRightInner = document.createElement('div');
+                            barRightInner.className = 'bar';
+                            barRightInner.style.height = `${(batch.counts.second / maxCount) * 100}%`;
+                            
+                            barRight.appendChild(barRightInner);
+                            
+                            // Add bars to container
+                            barContainer.appendChild(barLeft);
+                            barContainer.appendChild(barRight);
+                            gridItem.appendChild(barContainer);
+                            
+                            // Add value labels
+                            const labelsContainer = document.createElement('div');
+                            labelsContainer.className = 'value-labels';
+                            
+                            const label1 = document.createElement('div');
+                            label1.className = 'value-label';
+                            label1.textContent = summary.first_value;
+                            label1.style.color = '#9370DB';
+                            
+                            const label2 = document.createElement('div');
+                            label2.className = 'value-label';
+                            label2.textContent = summary.second_value;
+                            label2.style.color = '#00CED1';
+                            
+                            labelsContainer.appendChild(label1);
+                            labelsContainer.appendChild(label2);
+                            gridItem.appendChild(labelsContainer);
+                            
+                            // Add to grid
+                            gridContainer.appendChild(gridItem);
+                        });
+                        
+                        // Hide loading message and show grid
+                        document.getElementById('loadingMessage').style.display = 'none';
+                        gridContainer.style.display = 'grid';
+                    } else {
+                        document.getElementById('loadingMessage').textContent = 'No grid data available';
+                    }
+                    
+                    if (summary.extreme_runs !== undefined) {
+                        document.getElementById('extremeRunsCount').textContent = 
+                            `Found ${summary.extreme_runs} extreme runs (>${summary.extreme_threshold*100}% same value) out of ${summary.num_runs}`;
+                        
+                        // Display details of the first 5 runs
+                        const runsList = document.getElementById('extremeRunsList');
+                        summary.raw_runs.slice(0, 5).forEach((run, index) => {
+                            const count0 = run.filter(v => v === 0).length;
+                            const count1 = run.filter(v => v === 1).length;
+                            const ratio = Math.max(count0, count1) / run.length;
+                            
+                            const runInfo = document.createElement('p');
+                            runInfo.textContent = `Run ${index+1}: ${(ratio*100).toFixed(1)}% (${count0} vs ${count1})`;
+                            if (ratio > 0.95) runInfo.style.color = '#FF5733';
+                            runsList.appendChild(runInfo);
+                        });
+                    }
+                    
+                } catch (e) {
+                    console.error('Error parsing summary data:', e);
+                    document.getElementById('loadingMessage').textContent = 'Error processing data';
+                }
+            } else {
+                document.getElementById('loadingMessage').textContent = 'No data available';
+            }
+        });
+    </script>
+</body>
+</html> 

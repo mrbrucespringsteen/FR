@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FR - Machine II Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts are now imported in styles.css -->
+    <style>
+        /* Title styling is now in styles.css */
+        
+        .demo-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-group label {
+            color: #00CED1;
+            font-size: 1.2rem;
+        }
+        
+        .input-group input {
+            background-color: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .demo-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background-color: #444;
+        }
+        
+        .demo-button.primary {
+            background-color: #9370DB;
+        }
+        
+        .demo-button.primary:hover {
+            background-color: #8560cb;
+        }
+        
+        .demo-button.secondary {
+            background-color: #00CED1;
+        }
+        
+        .demo-button.secondary:hover {
+            background-color: #00bdc1;
+        }
+        
+        /* Result styles */
+        .result-container {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .visualization-img {
+            max-width: 100%;
+            width: 100%;
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: zoom-in;
+        }
+        
+        .single-result {
+            margin-top: 30px;
+            font-size: 2rem;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .loading {
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Add styles for a modal to view the full-size image */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 95%;
+            max-height: 95%;
+            margin-top: 2%;
+            cursor: zoom-out;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .contact a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <a href="index.html"><span>FR</span></a>
+            </div>
+            <div class="contact"><a href="https://arxiv.org/pdf/2503.14631" target="_blank">Context for Machine II</a></div>
+        </header>
+
+        <main>
+            <h1 class="demo-title">Machine II Demo</h1>
+            
+            <div class="demo-form">
+                <div class="input-group">
+                    <label for="input1">First Value:</label>
+                    <input type="number" id="input1" name="input1" max="99999999999999999999" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="input2">Second Value:</label>
+                    <input type="number" id="input2" name="input2" max="99999999999999999999" required>
+                </div>
+                
+                <div class="buttons">
+                    <button id="singleValueBtn" class="demo-button primary">Generate Single Value</button>
+                    <button id="multipleValuesBtn" class="demo-button secondary">Generate Visualization</button>
+                </div>
+            </div>
+            
+            <!-- Loading indicators -->
+            <div id="singleLoading" class="loading" style="display: none;">
+                Processing single value...
+            </div>
+            <div id="multipleLoading" class="loading" style="display: none;">
+                Generating visualization (this may take a while)...
+            </div>
+            
+            <!-- Single result display -->
+            <div id="singleResult" class="single-result"></div>
+            
+            <!-- Visualization result display -->
+            <div id="resultContainer" class="result-container">
+                <h2>Distribution Results</h2>
+                <p>Distribution between <span id="resultInput1"></span> and <span id="resultInput2"></span></p>
+                <p><small>(Click image to view full size)</small></p>
+                <img id="visualizationImg" class="visualization-img" src="" alt="Distribution Visualization">
+            </div>
+            
+            <!-- Modal for full-size image -->
+            <div id="imageModal" class="image-modal">
+                <span class="close-modal">&times;</span>
+                <img class="modal-content" id="modalImage">
+            </div>
+        </main>
+
+        <footer>
+            <div class="icon">
+                <a href="https://x.com/stephensonhmatt" target="_blank">
+                    <svg viewBox="0 0 100 100" width="50" height="50">
+                        <circle cx="50" cy="50" r="40" stroke="#FF9966" stroke-width="2" fill="none" />
+                        <circle cx="35" cy="40" r="5" fill="#FF9966" />
+                        <circle cx="65" cy="40" r="5" fill="#FF9966" />
+                        <path d="M 30 60 Q 50 80 70 60" stroke="#FF9966" stroke-width="2" fill="none" />
+                    </svg>
+                </a>
+            </div>
+            <div class="footer-image">
+                <img src="images/jankytransparent.png" alt="Janky transparent image">
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Include configuration file with API endpoint -->
+    <script src="config.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const singleValueBtn = document.getElementById('singleValueBtn');
+            const multipleValuesBtn = document.getElementById('multipleValuesBtn');
+            const input1 = document.getElementById('input1');
+            const input2 = document.getElementById('input2');
+            const singleLoading = document.getElementById('singleLoading');
+            const multipleLoading = document.getElementById('multipleLoading');
+            const singleResult = document.getElementById('singleResult');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultInput1 = document.getElementById('resultInput1');
+            const resultInput2 = document.getElementById('resultInput2');
+            const visualizationImg = document.getElementById('visualizationImg');
+            
+            // API base URL - can be overridden by environment variable
+            // In production, replace this with your deployed API URL
+            const apiBaseUrl = window.API_ENDPOINT || 'http://localhost:5001';
+            console.log('Using API endpoint:', apiBaseUrl);
+            
+            // Validate inputs
+            function validateInputs() {
+                if (!input1.value || !input2.value) {
+                    alert('Please enter both values');
+                    return false;
+                }
+                
+                if (input1.value.length > 20 || input2.value.length > 20) {
+                    alert('Values must not exceed 20 digits');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Reset all result displays
+            function resetDisplays() {
+                singleResult.style.display = 'none';
+                resultContainer.style.display = 'none';
+                singleLoading.style.display = 'none';
+                multipleLoading.style.display = 'none';
+            }
+            
+            // Add image modal functionality
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.querySelector('.close-modal');
+            
+            visualizationImg.addEventListener('click', function() {
+                imageModal.style.display = 'block';
+                modalImage.src = this.src;
+            });
+            
+            closeModal.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+            });
+            
+            imageModal.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+            });
+            
+            // Generate single value
+            singleValueBtn.addEventListener('click', function() {
+                if (validateInputs()) {
+                    resetDisplays();
+                    
+                    // Show loading state
+                    singleValueBtn.disabled = true;
+                    singleLoading.style.display = 'block';
+                    
+                    // Call API
+                    fetch(`${apiBaseUrl}/api/single`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            input1: input1.value,
+                            input2: input2.value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        singleLoading.style.display = 'none';
+                        
+                        if (data.success) {
+                            // Display the result
+                            singleResult.textContent = `Result: ${data.result}`;
+                            singleResult.style.display = 'block';
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                        singleValueBtn.disabled = false;
+                    })
+                    .catch(error => {
+                        singleLoading.style.display = 'none';
+                        alert('Error: ' + error.message);
+                        singleValueBtn.disabled = false;
+                    });
+                }
+            });
+            
+            // Generate visualization
+            multipleValuesBtn.addEventListener('click', function() {
+                if (validateInputs()) {
+                    resetDisplays();
+                    
+                    // Show loading state
+                    multipleValuesBtn.disabled = true;
+                    multipleLoading.style.display = 'block';
+                    
+                    // Call API
+                    fetch(`${apiBaseUrl}/api/generate`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            input1: input1.value,
+                            input2: input2.value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        multipleLoading.style.display = 'none';
+                        
+                        if (data.success) {
+                            // Update result display
+                            resultInput1.textContent = input1.value;
+                            resultInput2.textContent = input2.value;
+                            
+                            // Set the image source to the base64 data
+                            visualizationImg.src = `data:image/png;base64,${data.image}`;
+                            
+                            // Show the result container
+                            resultContainer.style.display = 'block';
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                        multipleValuesBtn.disabled = false;
+                    })
+                    .catch(error => {
+                        multipleLoading.style.display = 'none';
+                        alert('Error: ' + error.message);
+                        multipleValuesBtn.disabled = false;
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FR - About</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-title {
+            font-size: clamp(2rem, 6vw, 4rem); /* Smaller font size */
+            color: #9370DB; /* Same purple as the F in logo */
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            font-weight: 900;
+            line-height: 0.9;
+            max-width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .about-text {
+            font-size: 1.5rem;
+            color: #00CED1; /* Same teal as the R in logo */
+            max-width: 800px;
+            line-height: 1.4;
+        }
+        
+        .blog-style {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <a href="index.html"><span>FR</span></a>
+            </div>
+            <!-- Removed email contact -->
+        </header>
+
+        <main>
+            <div class="blog-style">
+                <h1 class="about-title">About</h1>
+                <p class="about-text">friendly neighborhood research front.</p>
+            </div>
+        </main>
+
+        <footer>
+            <!-- Removed smiley face icon -->
+            <div class="footer-image">
+                <img src="images/jankytransparent.png" alt="Janky transparent image">
+            </div>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

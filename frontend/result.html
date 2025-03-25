@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FR - Demo Result</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .result-value {
+            font-size: clamp(3rem, 15vw, 10rem);
+            color: #ff5733;
+            font-weight: 900;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .result-info {
+            color: #00CED1;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .back-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <a href="index.html"><span>FR</span></a>
+            </div>
+            <div class="contact">stealth@friendshipresearch.org</div>
+        </header>
+
+        <main>
+            <div class="result-container">
+                <div class="result-info">Result from inputs: <span id="input1Display"></span> and <span id="input2Display"></span></div>
+                <div class="result-value" id="resultValue">-</div>
+                <a href="demo.html" class="back-button">Try Again</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="icon">
+                <svg viewBox="0 0 100 100" width="50" height="50">
+                    <circle cx="50" cy="50" r="40" stroke="#ff5733" stroke-width="2" fill="none" />
+                    <circle cx="35" cy="40" r="5" fill="#ff5733" />
+                    <circle cx="65" cy="40" r="5" fill="#ff5733" />
+                    <path d="M 30 60 Q 50 80 70 60" stroke="#ff5733" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+            <div class="footer-image">
+                <img src="images/jankytransparent.png" alt="Janky transparent image">
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get values from localStorage
+            const input1 = localStorage.getItem('demoInput1') || '-';
+            const input2 = localStorage.getItem('demoInput2') || '-';
+            const result = localStorage.getItem('demoResult') || '-';
+            
+            // Display values
+            document.getElementById('input1Display').textContent = input1;
+            document.getElementById('input2Display').textContent = input2;
+            document.getElementById('resultValue').textContent = result;
+            
+            // Highlight the result based on which input it matches
+            if (result == input1) {
+                document.getElementById('resultValue').style.color = '#9370DB'; // Purple
+            } else if (result == input2) {
+                document.getElementById('resultValue').style.color = '#00CED1'; // Teal
+            }
+        });
+    </script>
+</body>
+</html> 

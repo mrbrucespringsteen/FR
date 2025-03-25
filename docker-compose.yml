@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./backend:/app
+    container_name: fr-machine-api
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    restart: unless-stopped
+    container_name: fr-machine-frontend
+    depends_on:
+      - backend 
