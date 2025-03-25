@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to test API connection
 function testApiConnection() {
     // Get API endpoint from config.js (which should be included before this script)
-    const apiUrl = window.API_ENDPOINT || 'http://api.friendshipresearch.org:5001';
+    const apiUrl = window.API_ENDPOINT || 'https://api.friendshipresearch.org';
     
     console.log('Testing connection to API at:', apiUrl);
     
@@ -54,7 +54,7 @@ function handleGenerateClick() {
     const input1 = parseFloat(document.getElementById('input1').value) || 0;
     const input2 = parseFloat(document.getElementById('input2').value) || 1;
     
-    const apiUrl = window.API_ENDPOINT || 'http://api.friendshipresearch.org:5001';
+    const apiUrl = window.API_ENDPOINT || 'https://api.friendshipresearch.org';
     
     fetch(`${apiUrl}/api/generate`, {
         method: 'POST',
@@ -88,7 +88,7 @@ function handleSingleDrawClick() {
     const input1 = parseFloat(document.getElementById('input1').value) || 0;
     const input2 = parseFloat(document.getElementById('input2').value) || 1;
     
-    const apiUrl = window.API_ENDPOINT || 'http://api.friendshipresearch.org:5001';
+    const apiUrl = window.API_ENDPOINT || 'https://api.friendshipresearch.org';
     
     fetch(`${apiUrl}/api/single`, {
         method: 'POST',
