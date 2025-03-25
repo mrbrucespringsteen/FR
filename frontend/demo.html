@@ -233,9 +233,8 @@
             const resultInput2 = document.getElementById('resultInput2');
             const visualizationImg = document.getElementById('visualizationImg');
             
-            // API base URL - can be overridden by environment variable
-            // In production, replace this with your deployed API URL
-            const apiBaseUrl = window.API_ENDPOINT || 'http://localhost:5001';
+            // Get API endpoint from config.js
+            const apiBaseUrl = window.API_ENDPOINT || 'http://api.friendshipresearch.org:5001';
             console.log('Using API endpoint:', apiBaseUrl);
             
             // Validate inputs
