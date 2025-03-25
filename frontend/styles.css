@@ -105,7 +105,6 @@ main {
 .headline {
     font-size: clamp(3rem, 10vw, 8rem);
     color: #FF9966;
-    text-transform: uppercase;
     letter-spacing: -0.02em;
     font-weight: 900;
     line-height: 0.9;

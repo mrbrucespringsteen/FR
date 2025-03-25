@@ -39,13 +39,13 @@ function testApiConnection() {
     })
     .then(data => {
         console.log('API test successful:', data);
-        // Optionally display a success message on the page
-        displayApiStatus('API connection successful!', true);
+        // Disabling API status display
+        // displayApiStatus('API connection successful!', true);
     })
     .catch(error => {
         console.error('API test failed:', error);
-        // Optionally display an error message on the page
-        displayApiStatus('API connection failed. See console for details.', false);
+        // Disabling API status display
+        // displayApiStatus('API connection failed. See console for details.', false);
     });
 }
 
